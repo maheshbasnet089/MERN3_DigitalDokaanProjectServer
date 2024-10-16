@@ -4,5 +4,6 @@ config()
 
 
 export const envConfig = {
-    port : process.env.PORT
+    port : process.env.PORT, 
+    connectionString : process.env.CONNECTION_STRING
 }

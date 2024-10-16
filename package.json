@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev" : "nodemon server.ts"
+    "dev": "nodemon server.ts"
   },
   "keywords": [],
   "author": "",
@@ -11,7 +11,9 @@
   "description": "",
   "dependencies": {
     "dotenv": "^16.4.5",
-    "express": "^4.21.0"
+    "express": "^4.21.0",
+    "pg": "^8.13.0",
+    "sequelize-typescript": "^2.1.6"
   },
   "devDependencies": {
     "@types/express": "^5.0.0",
