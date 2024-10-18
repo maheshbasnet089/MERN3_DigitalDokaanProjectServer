@@ -17,5 +17,8 @@ try {
     console.log(error)
 }
 
+sequelize.sync({force : false}).then(()=>{
+    console.log("local changes injected to database successfully")
+})
 
 export default sequelize
