@@ -8,17 +8,17 @@ const sequelize = new Sequelize(envConfig.connectionString as string,{
 try {
     sequelize.authenticate()
     .then(()=>{
-        console.log("milyo hai authentication so ma connect vaye hai tw !!!")
+        console.log("Connected !!! 😀")
     })
     .catch(err=>{
-        console.log("error aayo", err)
+        console.log("ERROR 😝 : ", err)
     })
 } catch (error) {
     console.log(error)
 }
 
 sequelize.sync({force : false}).then(()=>{
-    console.log("local changes injected to database successfully")
+    console.log("synced !!")
 })
 
 export default sequelize
