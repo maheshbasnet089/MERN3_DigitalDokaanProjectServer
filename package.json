@@ -10,12 +10,14 @@
   "license": "ISC",
   "description": "",
   "dependencies": {
+    "bcrypt": "^5.1.1",
     "dotenv": "^16.4.5",
     "express": "^4.21.0",
     "pg": "^8.13.0",
     "sequelize-typescript": "^2.1.6"
   },
   "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
     "@types/express": "^5.0.0",
     "nodemon": "^3.1.7",
     "ts-node": "^10.9.2",
