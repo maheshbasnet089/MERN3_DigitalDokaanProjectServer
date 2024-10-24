@@ -2,6 +2,8 @@ import { Request, Response } from "express";
 import User from "../database/models/userModel";
 import bcrypt from 'bcrypt'
 import generateToken from "../services/generateToken";
+import generateOtp from "../services/generateOtp";
+import sendMail from "../services/sendMail";
 
 
 class UserController{
@@ -59,16 +61,44 @@ class UserController{
                     message : "Invalid password 😢"
                 })
             }else{
-                // if password milyo vane --> token generate(jwt)   
-                
+                // if password milyo vane --> token generate(jwt)    
               const token = generateToken(user.id)
                 res.status(200).json({
                     message : "Logged in success 🥰", 
                     token
                 })
-
-            }
+       }
         }
+
+    }
+    static async handleForgotPassword(req:Request,res:Response){
+        const {email} = req.body 
+        if(!email){
+            res.status(400).json({message : "Please provide email"})
+            return
+        }
+        
+        const [user] = await User.findAll({
+            where : {
+                email : email
+            }
+        })
+        if(!user){
+             res.status(404).json({
+                email : "Email not registered"
+            })
+            return
+        }
+        // otp pathaunu paryo aba, generate otp, mail sent
+        const otp = generateOtp()
+        await sendMail({
+            to : email, 
+            subject : "Digital Dokaan Password Change Request", 
+            text : `You just request to reset password. Here is your otp, ${otp}`
+        })
+        res.status(200).json({
+            message : "Password Reset OTP sent!!!!"
+        })
 
     }
 }
