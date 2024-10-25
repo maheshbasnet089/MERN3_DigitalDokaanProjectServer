@@ -23,6 +23,11 @@ class UserController{
             password : bcrypt.hashSync(password,10), 
     
         })
+        await sendMail({
+            to : email, 
+            subject : "Registration successfull on Digital Dokaan", 
+            text : "Welcome to Digital Dokaan, Thank you for registering"
+        })
 
         // await sequelize.query(`INSERT INTO users(id,username,email,password) VALUES (?,?,?,?)`, {
         //     replacements : ['b5a3f20d-6202-4159-abd9-0c33c6f70487', username,email,password], 
@@ -96,6 +101,10 @@ class UserController{
             subject : "Digital Dokaan Password Change Request", 
             text : `You just request to reset password. Here is your otp, ${otp}`
         })
+        user.otp = otp.toString()
+        user.otpGeneratedTime = Date.now().toString()
+        await user.save()
+
         res.status(200).json({
             message : "Password Reset OTP sent!!!!"
         })
