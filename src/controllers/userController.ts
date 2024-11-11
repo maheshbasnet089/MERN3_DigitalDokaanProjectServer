@@ -19,6 +19,18 @@ class UserController{
             })
             return
         }
+        // check whether that email already exist or not 
+        const [data] =  await User.findAll({
+            where : {
+                email : email
+            }
+        })
+        if(data){
+             res.status(400).json({
+                message : "Please try again later !!!"
+            })
+            return
+        }
         // data --> users table ma insert garne 
         await User.create({
             username, 
