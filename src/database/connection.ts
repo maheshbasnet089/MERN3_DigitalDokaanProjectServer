@@ -1,5 +1,7 @@
 import {Sequelize} from 'sequelize-typescript'
 import { envConfig } from '../config/config'
+import Product from './models/productModel'
+import Category from './models/categoryModel'
 
 const sequelize = new Sequelize(envConfig.connectionString as string,{
     models : [__dirname + '/models']
@@ -17,8 +19,11 @@ try {
     console.log(error)
 }
 
-sequelize.sync({force : false,alter:false}).then(()=>{
+sequelize.sync({force : false,alter:true}).then(()=>{
     console.log("synced !!")
 })
+// relationships // 
+Product.belongsTo(Category)
+Category.hasOne(Product)
 
 export default sequelize
