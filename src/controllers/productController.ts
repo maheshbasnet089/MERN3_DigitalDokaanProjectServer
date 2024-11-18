@@ -3,16 +3,10 @@ import Product from "../database/models/productModel";
 import Category from "../database/models/categoryModel";
 
 
-interface ProductRequest extends Request{
-    file? : {
-        filename : string
-    }, 
-
-}
-
 class ProductController{
-    async createProduct(req:ProductRequest,res:Response):Promise<void>{
+    async createProduct(req:Request,res:Response):Promise<void>{
         const {productName,productDescription,productPrice,productTotalStock,discount,categoryId} = req.body 
+        console.log(req.file)
         const filename = req.file ? req.file.filename : "https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
         if(!productName || !productDescription || !productPrice || !productTotalStock  || !categoryId){
             res.status(400).json({
@@ -26,7 +20,7 @@ class ProductController{
             productPrice,
             productTotalStock,
             discount : discount || 0,
-            categoryId, 
+            categoryId:categoryId, 
             productImageUrl : filename
         })
         res.status(200).json({
@@ -37,7 +31,8 @@ class ProductController{
         const datas = await Product.findAll({
             include : [
                 {
-                    model : Category
+                    model : Category, 
+                    attributes : ['id','categoryName']
                 }
             ]
         })
@@ -54,7 +49,8 @@ class ProductController{
             },
             include : [
                 {
-                    model : Category
+                    model : Category, 
+                    attributes : ['id','categoryName']
                 }
             ]
         })
