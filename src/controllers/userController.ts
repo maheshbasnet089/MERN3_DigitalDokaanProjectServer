@@ -92,6 +92,7 @@ class UserController{
 
     }
     static async handleForgotPassword(req:Request,res:Response){
+       
         const {email} = req.body 
         if(!email){
             res.status(400).json({message : "Please provide email"})

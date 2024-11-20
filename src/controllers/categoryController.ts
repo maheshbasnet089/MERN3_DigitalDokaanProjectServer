@@ -22,17 +22,20 @@ class CategoryController{
         }
     ]
     async seedCategory():Promise<void>{
-        const datas = await Category.findAll()
-        if(datas.length === 0){
-            await Category.bulkCreate(this.categoryData)
-            console.log("Categories seeded successfully")
-        }else{
-            console.log("Categories already seeded")
-        }
+
+            const datas = await Category.findAll()
+            if(datas.length === 0){
+                await Category.bulkCreate(this.categoryData)
+                console.log("Categories seeded successfully")
+            }else{
+                console.log("Categories already seeded")
+            }
+
+      
     }
     async addCategory(req:Request,res:Response):Promise<void>{
         //@ts-ignore
-        console.log(req.user)
+       
         const {categoryName} = req.body 
         if(!categoryName){
             res.status(400).json({

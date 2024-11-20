@@ -5,8 +5,8 @@ import Category from "../database/models/categoryModel";
 
 class ProductController{
     async createProduct(req:Request,res:Response):Promise<void>{
-        const {productName,productDescription,productPrice,productTotalStock,discount,categoryId} = req.body 
-        console.log(req.file)
+      
+            const {productName,productDescription,productPrice,productTotalStock,discount,categoryId} = req.body 
         const filename = req.file ? req.file.filename : "https://weimaracademy.org/wp-content/uploads/2021/08/dummy-user.png"
         if(!productName || !productDescription || !productPrice || !productTotalStock  || !categoryId){
             res.status(400).json({
@@ -14,7 +14,7 @@ class ProductController{
             })
             return
         }
-        await Product.create({
+         await Product.create({
             productName,
             productDescription,
             productPrice,
@@ -26,6 +26,7 @@ class ProductController{
         res.status(200).json({
             message : "Product created successfully"
         })
+  
     }
     async getAllProducts(req:Request,res:Response) : Promise<void>{
         const datas = await Product.findAll({
