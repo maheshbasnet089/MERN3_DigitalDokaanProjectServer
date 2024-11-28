@@ -23,7 +23,7 @@ try {
     console.log(error)
 }
 
-sequelize.sync({force : false,alter:true}).then(()=>{
+sequelize.sync({force : false,alter:false}).then(()=>{
     console.log("synced !!")
 })
 // relationships // 
