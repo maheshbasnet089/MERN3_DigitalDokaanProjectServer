@@ -6,6 +6,7 @@ import User from './models/userModel'
 import Order from './models/orderModel'
 import Payment from './models/paymentModel'
 import OrderDetails from './models/orderDetails'
+import Cart from './models/cartModel'
 
 const sequelize = new Sequelize(envConfig.connectionString as string,{
     models : [__dirname + '/models']
@@ -23,7 +24,7 @@ try {
     console.log(error)
 }
 
-sequelize.sync({force : false,alter:false}).then(()=>{
+sequelize.sync({force : false,alter:true}).then(()=>{
     console.log("synced !!")
 })
 // relationships // 
@@ -43,4 +44,12 @@ OrderDetails.belongsTo(Order,{foreignKey:'orderId'})
 
 Product.hasMany(OrderDetails,{foreignKey:'productId'})
 OrderDetails.belongsTo(Product,{foreignKey:'productId'})
+
+// cart - user 
+Cart.belongsTo(User,{foreignKey:"userId"})
+User.hasOne(Cart,{foreignKey:"userId"})
+
+// cart - product 
+Cart.belongsTo(Product,{foreignKey:"productId"})
+Product.hasMany(Cart,{foreignKey:"productId"})
 export default sequelize
