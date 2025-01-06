@@ -5,8 +5,13 @@ import categoryRoute from './routes/categoryRoute'
 import productRoute from './routes/productRoute'
 import OrderRoute from './routes/orderRoute'
 import CartRoute from './routes/cartRoute'
+import cors from 'cors'
 
 const app = express()
+app.use(cors({
+    origin : "*"
+}))
+
 app.use(express.json())
 
 
