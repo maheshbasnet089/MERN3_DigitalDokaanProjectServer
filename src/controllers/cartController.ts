@@ -112,6 +112,7 @@ class CartController{
         const userId = req.user?.id 
         const {productId} = req.params 
         const {quantity} = req.body 
+        console.log(productId)
         if(!quantity){
             res.status(400).json({
                 message : 'Please provide quantity'
@@ -124,6 +125,7 @@ class CartController{
                 productId
             }
         })
+        console.log(cartItem)
         if(!cartItem){
             res.status(404).json({
                 message : "Cart ma tyo ProductId ko product xainw!!!"
