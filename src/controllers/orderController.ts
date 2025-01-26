@@ -4,6 +4,7 @@ import OrderDetails from "../database/models/orderDetails";
 import { PaymentMethod, PaymentStatus } from "../globals/types";
 import Payment from "../database/models/paymentModel";
 import axios from 'axios'
+import Cart from "../database/models/cartModel";
 
 interface IProduct{
     productId : string, 
@@ -19,9 +20,10 @@ interface OrderRequest extends Request{
 class OrderController{
     static async createOrder(req:OrderRequest,res:Response):Promise<void>{
         const userId =  req.user?.id
-        const {phoneNumber,shippingAddress,totalAmount,paymentMethod} = req.body 
+        const {phoneNumber,firstName,lastName, email, city,addressLine,state,zipCode, totalAmount,paymentMethod} = req.body 
         const products:IProduct[] = req.body.products
-        if(!phoneNumber || !shippingAddress || !totalAmount || products.length == 0 ){
+        console.log(req.body)
+        if(!phoneNumber || !city || !addressLine || !state || !zipCode || !totalAmount || products.length == 0 || !firstName || !lastName || !email ){
             res.status(400).json({
                 message : "Please provide phoneNumber,shippingAddress,totalAmount,products"
             })
@@ -30,16 +32,30 @@ class OrderController{
         // for order 
         const orderData = await Order.create({
             phoneNumber, 
-            shippingAddress, 
+            city, 
+            state, 
+            zipCode, 
+            addressLine,
             totalAmount, 
-            userId
+            userId, 
+            firstName, 
+            lastName, 
+            email
         })
+        let data; 
         // for orderDetails
       products.forEach(async function(product){
-        await OrderDetails.create({
+        data = await OrderDetails.create({
             quantity : product.productQty, 
             productId : product.productId, 
             orderId : orderData.id
+        })
+
+        await Cart.destroy({
+          where : {
+            productId : product.productId, 
+            userId : userId
+          }
         })
       })
       // for payment
@@ -68,13 +84,16 @@ class OrderController{
       res.status(200).json({
         message : "Order created successfully", 
         url : khaltiResponse.payment_url, 
-        pidx : khaltiResponse.pidx
+        pidx : khaltiResponse.pidx,  
+        data
+
       })
       }else if(paymentMethod == PaymentMethod.Esewa){
 
       }else{
         res.status(200).json({
-          message : "Order created successfully"
+          message : "Order created successfully",
+          data
         })
       }
  
