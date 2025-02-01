@@ -36,8 +36,8 @@ User.hasMany(Order,{foreignKey:'userId'})
 Order.belongsTo(User,{foreignKey:'userId'})
 
 // Payment X Order 
-Order.hasOne(Payment,{foreignKey:'orderId'})
-Payment.belongsTo(Order,{foreignKey:'orderId'})
+Payment.hasOne(Order,{foreignKey:'paymentId'})
+Order.belongsTo(Payment,{foreignKey:'paymentId'})
 
 Order.hasOne(OrderDetails,{foreignKey:'orderId'})
 OrderDetails.belongsTo(Order,{foreignKey:'orderId'})
