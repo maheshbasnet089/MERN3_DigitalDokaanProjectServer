@@ -176,7 +176,7 @@ class OrderController{
               attributes : ["paymentMethod","paymentStatus"]
             }
           ],
-          attributes : ["orderStatus","AddressLine","City","State","totalAmount","phoneNumber"]
+          attributes : ["orderStatus","AddressLine","City","State","totalAmount","phoneNumber", "firstName", "lastName"]
         },{
           model : Product, 
           include : [{
