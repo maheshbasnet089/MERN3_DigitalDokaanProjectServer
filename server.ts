@@ -26,7 +26,9 @@ function startServer(){
         onlineUsers.push({socketId,userId,role})
     }
     io.on("connection",(socket)=>{
-        const token = socket.handshake.headers.token // jwt token 
+        console.log("connected")
+        const {token} = socket.handshake.auth // jwt token 
+        console.log(token,"TOKEN")
         if(token){
             jwt.verify(token as string,envConfig.jwtSecretKey as string, async (err:any,result:any)=>{
                 if(err){
@@ -39,17 +41,20 @@ function startServer(){
                     }
                     // userID grab garnu paryo 
                     // 2, 2, customer
+                    console.log(socket.id,result.userId,userData.role)
                     addToOnlineUsers(socket.id,result.userId,userData.role)
                     console.log(onlineUsers)
               
                 }
                })
-               
-        }else{
-            socket.emit("error","Please provide token")
-        }
+            }else{
+                console.log("triggered")
+                socket.emit("error","Please provide token")
+            }
+            console.log(onlineUsers)
         socket.on("updateOrderStatus",async (data)=>{
             const {status,orderId,userId} = data
+            console.log(data,"USS")
             console.log(status,orderId)
             const findUser = onlineUsers.find(user=>user.userId == userId) // {socketId,userId, role}
             await Order.update(
@@ -63,7 +68,8 @@ function startServer(){
                } 
             )
             if(findUser){
-                io.to(findUser.socketId).emit("success","Order Status updated successfully!!")
+                console.log(findUser.socketId,"FS")
+                io.to(findUser.socketId).emit("statusUpdated",data)
             }else{
                 socket.emit("error","User is not online!!")
             }
